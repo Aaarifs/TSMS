@@ -11,23 +11,21 @@
 
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="width: 100%; background-color:#0866FF;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-    <div class="dropdown mx-auto">
+      <div class="dropdown mx-auto">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="../image/logo (4).png" alt="Logo" style="width:64px;height:36px;">
+          <img src="../image/logo (4).png" alt="Logo" style="width:64px;height:36px;">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-        <li>
+        <li><a class="dropdown-item" href="{{ route('player-profile') }}">Profile</a></li>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
+              @csrf
             </form>
-        </li>
+          </li>
         </ul>
+      </div>
     </div>
-    </div>
-</nav>
-
+  </nav>
   <main style="display: flex; flex-direction: column; min-height: 15vh;">
   <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
         <a href="home-upcoming.html" type="button" class="btn btn-secondary" style="margin-top: 10px; margin-right: 10px;">Players</a>

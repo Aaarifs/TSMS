@@ -10,14 +10,14 @@
 <body style="background-image: url('../image/backgroundtsms.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
 
   <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="width: 100%; background-color:#0866FF;">
-    <a href="{{ route('manager-home') }}" class="btn btn-link position-absolute text-white" style=" text-decoration: none;">&lt; Back</a>
+    <a href="{{ route('player-home') }}" class="btn btn-link position-absolute text-white" style=" text-decoration: none;">&lt; Back</a>
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div class="dropdown mx-auto">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="../image/logo (4).png" alt="Logo" style="width:64px;height:36px;">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><a class="dropdown-item" href="{{ route('manager-profile') }}">Profile</a></li>
+        <li><a class="dropdown-item" href="{{ route('player-profile') }}">Profile</a></li>
         <li>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -33,8 +33,8 @@
 
     <div class="col-md-8 mx-auto">
         <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
-        <a href="{{ route('manager-match', $tournament->id) }}" class="btn btn-primary" style="margin-right: 10px; margin-top: 10px;">Match</a>
-        <a href="{{ route('manager-standings', $tournament->id) }}" class="btn btn-primary" style="margin-right: 10px; margin-top: 10px;">Standings</a>
+        <a href="{{ route('player-match', $tournament->id) }}" class="btn btn-primary" style="margin-right: 10px; margin-top: 10px;">Match</a>
+        <a href="{{ route('player-standings', $tournament->id) }}" class="btn btn-primary" style="margin-right: 10px; margin-top: 10px;">Standings</a>
         <a href="" class="btn btn-primary disabled" style="margin-top: 10px;">Teams</a>
         </div>  
       </div>

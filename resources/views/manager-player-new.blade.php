@@ -16,7 +16,7 @@
           <img src="../image/logo (4).png" alt="Logo" style="width:64px;height:36px;">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+        <li><a class="dropdown-item" href="{{ route('manager-profile') }}">Profile</a></li>
           <li>
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -40,8 +40,8 @@
       </div>
       <div class="container">
     <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
-    <a href="" type="button" class="btn btn-primary disabled " style="margin-right: 10px;">Upcoming</a>
-    <a href="{{ route('player-past') }}" type="button" class="btn btn-primary ">Past</a>
+    <a href="{{ route('player-home', ['type' => 'upcoming']) }}" type="button" class="btn btn-primary {{ $type == 'upcoming' ? 'active' : '' }}" style="margin-right: 10px;">Upcoming</a>
+    <a href="{{ route('player-home', ['type' => 'past']) }}" type="button" class="btn btn-primary {{ $type == 'past' ? 'active' : '' }}">Past</a>
 
     </div>
 </div>

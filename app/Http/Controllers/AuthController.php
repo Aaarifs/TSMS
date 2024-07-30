@@ -110,11 +110,29 @@ public function showManager(Request $request)
     
         
 
-        public function showPlayer()
-        {
-            $tournaments = Tournament::all(); // or use a specific query to get the tournaments you need
-            return view('player-home', compact('tournaments'));
-        }
+public function showPlayer(Request $request)
+{
+    // Set the default time zone to Asia/Kuala_Lumpur
+    $timezone = 'Asia/Kuala_Lumpur';
+    $now = Carbon::now($timezone);
+    
+    // Determine the type of tournaments to show (upcoming or past)
+    $type = $request->query('type', 'upcoming');
+
+    // Fetch the tournaments based on the type
+    $tournaments = Tournament::when($type == 'past', function ($query) use ($now) {
+        $query->where('date', '<=', $now);
+    }, function ($query) use ($now) {
+        $query->where('date', '>', $now);
+    })
+    ->get();
+
+    return view('player-home', [
+        'tournaments' => $tournaments,
+        'type' => $type
+    ]);
+}
+
         
 
     

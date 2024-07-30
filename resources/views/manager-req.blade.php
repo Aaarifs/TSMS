@@ -9,17 +9,20 @@
 </head>
 <body style="background-image: url('../image/backgroundtsms.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
 
-  <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="width: 100%; background-color:#0866FF;">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="width: 100%; background-color:#0866FF;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div class="dropdown mx-auto">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="../image/logo (4).png" alt="Logo" style="width:64px;height:36px;">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><a class="dropdown-item" href="login.html">Login</a></li>
-          <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-          <li><a class="dropdown-item" href="settings.html">Team</a></li>
-          <li><a class="dropdown-item" href="settings.html">Logout</a></li>
+        <li><a class="dropdown-item" href="{{ route('manager-profile') }}">Profile</a></li>
+          <li>
+            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+            </form>
+          </li>
         </ul>
       </div>
     </div>

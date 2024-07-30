@@ -92,7 +92,9 @@ Route::get('/tournament/{tournament}/standings', [TournamentController::class, '
     // Player
     Route::get('/player-home', [AuthController::class, 'showPlayer'])->name('player-home');
     Route::get('player/tournaments/past', [TournamentController::class, 'showPastTournaments'])->name('player-past');
-    Route::get('/player-match', [TournamentController::class, 'showPlayerMatch'])->name('player-match');
+    Route::get('/tournament-match/{id}', [TournamentController::class, 'showPlayerTournamentMatch'])->name('player-match')->middleware('auth:player');
+    Route::get('/tournament-standings/{id}', [TournamentController::class, 'showPlayerTournamentStandings'])->name('player-standings')->middleware('auth:player');
+    Route::get('/tournament-teams/{id}', [TournamentController::class, 'showPlayerTournamentTeams'])->name('player-team')->middleware('auth:player');
 
     
     Route::get('/player-profile', [AuthController::class, 'showPlayerProfile'])->name('player-profile');

@@ -209,6 +209,13 @@ public function showOrganiserTournamentMatch($id)
         $matches = Matches::where('tournament_id', $id)->get(); // Fetch matches for the tournament
         return view('manager-match', compact('tournament', 'matches')); // Pass the tournament and matches to the view
     }
+
+    public function showPlayerTournamentMatch($id)
+    {
+        $tournament = Tournament::findOrFail($id); // Retrieve the specific tournament by its id
+        $matches = Matches::where('tournament_id', $id)->get(); // Fetch matches for the tournament
+        return view('player-match', compact('tournament', 'matches')); // Pass the tournament and matches to the view
+    }
     
 
     public function showManagerTournamentStandings($id)
@@ -241,6 +248,37 @@ public function showOrganiserTournamentMatch($id)
             'standings' => $standingsWithNames,
         ]);
     }
+
+    public function showPlayerTournamentStandings($id)
+    {
+        // Fetch the tournament by its ID
+        $tournament = Tournament::findOrFail($id);
+    
+        // Fetch standings from the tournament_teams table
+        $standings = Tournament_team::where('tournament_id', $id)
+            ->orderBy('standings') // Order by standings to ensure ranks are in ascending order
+            ->get(['teammanager_id', 'points', 'standings']); // Fetch points and standings
+    
+        // Retrieve team names for displaying
+        $teamIds = $standings->pluck('teammanager_id');
+        $teams = Teammanager::whereIn('id', $teamIds)->get()->keyBy('id');
+    
+        // Map the standings to include team names and ensure ranks are assigned correctly
+        $standingsWithNames = $standings->map(function ($standing) use ($teams) {
+            $team = $teams->get($standing->teammanager_id);
+            return [
+                'team_name' => $team ? $team->team_name : 'Unknown',
+                'points' => $standing->points,
+                'rank' => $standing->standings, // Ensure rank is included
+            ];
+        });
+    
+        // Pass the tournament and standings to the view
+        return view('player-standings', [
+            'tournament' => $tournament,
+            'standings' => $standingsWithNames,
+        ]);
+    }
     
     
 
@@ -252,6 +290,16 @@ public function showOrganiserTournamentMatch($id)
         $teams = Teammanager::whereIn('id', $teammanagerIds)->get();
 
         return view('manager-team', compact('tournament','teams')); // Pass the tournament to the view
+    }
+
+    public function showPlayerTournamentTeams($id)
+    {
+        $tournament = Tournament::findOrFail($id); 
+        $teammanagerIds = Tournament_team::where('tournament_id', $id)
+        ->pluck('teammanager_id');
+        $teams = Teammanager::whereIn('id', $teammanagerIds)->get();
+
+        return view('player-team', compact('tournament','teams')); // Pass the tournament to the view
     }
 
     // public function showTournaments($type = 'upcoming') // default to 'upcoming'
