@@ -254,20 +254,20 @@ public function showOrganiserTournamentMatch($id)
         return view('manager-team', compact('tournament','teams')); // Pass the tournament to the view
     }
 
-    public function showTournaments($type = 'upcoming') // default to 'upcoming'
-    {
-        $today = now();
+    // public function showTournaments($type = 'upcoming') // default to 'upcoming'
+    // {
+    //     $today = now();
     
-        if ($type === 'upcoming') {
-            $tournaments = Tournament::where('date', '>', $today)->get();
-            return view('manager-home', compact('tournaments', 'type'));
-        } elseif ($type === 'past') {
-            $tournaments = Tournament::where('date', '<=', $today)->get();
-            return view('manager-past', compact('tournaments', 'type'));
-        } else {
-            return redirect()->back()->with('error', 'Invalid tournament type.');
-        }
-    }
+    //     if ($type === 'upcoming') {
+    //         $tournaments = Tournament::where('date', '>', $today)->get();
+    //         return view('manager-home', compact('tournaments', 'type'));
+    //     } elseif ($type === 'past') {
+    //         $tournaments = Tournament::where('date', '<=', $today)->get();
+    //         return view('manager-past', compact('tournaments', 'type'));
+    //     } else {
+    //         return redirect()->back()->with('error', 'Invalid tournament type.');
+    //     }
+    // }
     
 
     public function showPlayerTournaments($type)
