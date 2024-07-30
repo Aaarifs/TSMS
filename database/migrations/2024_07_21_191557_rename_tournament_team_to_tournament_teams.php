@@ -26,3 +26,5 @@ class RenameTournamentTeamToTournamentTeams extends Migration
         Schema::rename('tournament_teams', 'tournament_team');
     }
 }
+
+

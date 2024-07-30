@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTournamentTeamsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,6 +30,6 @@ class CreateTournamentTeamsTable extends Migration
     {
         Schema::dropIfExists('tournament_teams');
     }
-}
+};
 
 
