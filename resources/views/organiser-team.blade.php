@@ -68,7 +68,7 @@
                     @foreach($teams as $teammanager)
                       <tr>
                         <td>
-                          <a href="tournament-teams-players.html" class="text-decoration-none">{{ $teammanager->team_name }}</a>
+                          <p>{{ $teammanager->team_name }}</p>
                         </td>
                       </tr>
                     @endforeach
