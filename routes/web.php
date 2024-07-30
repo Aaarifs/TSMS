@@ -65,13 +65,25 @@ Route::get('/tournament/{tournament}/standings', [TournamentController::class, '
 
 
     // Teammanager
-    Route::get('/tournament-match/{id}', [TournamentController::class, 'showManagerTournamentMatch'])->name('manager-match')->middleware('auth:teammanager');
-    Route::get('/tournament-standings/{id}', [TournamentController::class, 'showManagerTournamentStandings'])->name('manager-standings')->middleware('auth:teammanager');
-    Route::get('/tournament-teams/{id}', [TournamentController::class, 'showManagerTournamentTeams'])->name('manager-team')->middleware('auth:teammanager');
-    Route::get('/tournaments/{type}', [TournamentController::class, 'showTournaments'])->name('show-tournaments');
-    // Route::get('', [TournamentController::class, 'showTournaments'])->name('manager-past');
-    Route::post('/registertour/{tournament}', [TournamentController::class, 'registertour'])->name('registertour');
-    Route::get('/manager/home', [AuthController::class, 'showManager'])->name('manager-home');
+    Route::get('/tournament-match/{id}', [TournamentController::class, 'showManagerTournamentMatch'])
+    ->name('manager-match')
+    ->middleware('auth:teammanager');
+
+Route::get('/tournament-standings/{id}', [TournamentController::class, 'showManagerTournamentStandings'])
+    ->name('manager-standings')
+    ->middleware('auth:teammanager');
+
+Route::get('/tournament-teams/{id}', [TournamentController::class, 'showManagerTournamentTeams'])
+    ->name('manager-team')
+    ->middleware('auth:teammanager');
+
+Route::post('/registertour/{tournament}', [TournamentController::class, 'registertour'])
+    ->name('registertour')
+    ->middleware('auth:teammanager');
+
+Route::get('/manager-home', [AuthController::class, 'showManager'])
+    ->name('manager-home')
+    ->middleware('auth:teammanager');
     Route::get('/manager/history', [TournamentController::class, 'showHistory'])->name('manager-history');
     Route::delete('/tournaments/{id}/withdraw', [TournamentController::class, 'withdraw'])->name('withdraw-tournament')->middleware('auth:teammanager');
 

@@ -138,29 +138,23 @@ class TournamentController extends Controller
 
     public function registertour($tournament_id)
     {
-        // Assuming the user is authenticated as a team manager
         $teammanager_id = auth('teammanager')->id();
-    
-        // Check if the team manager is authenticated
+        
         if (!$teammanager_id) {
             return redirect()->route('manager-home')->with('error', 'You must be logged in as a team manager to register.');
         }
     
-        // Check if there are already 8 teams registered for the tournament
         $registeredTeamsCount = Tournament_team::where('tournament_id', $tournament_id)->count();
     
         if ($registeredTeamsCount >= 8) {
-            // Set a session variable to trigger the modal on the front end
             return redirect()->route('manager-home')->with('showModal', true);
         }
     
-        // Create a new record in the Tournament_team table
         Tournament_team::create([
             'teammanager_id' => $teammanager_id,
             'tournament_id' => $tournament_id,
         ]);
     
-        // Redirect or return a response
         return redirect()->route('manager-home')->with('success', 'Successfully registered for the tournament!');
     }
     
@@ -205,9 +199,9 @@ public function showOrganiserTournamentMatch($id)
 
     public function showManagerTournamentMatch($id)
     {
-        $tournament = Tournament::findOrFail($id); // Retrieve the specific tournament by its id
-        $matches = Matches::where('tournament_id', $id)->get(); // Fetch matches for the tournament
-        return view('manager-match', compact('tournament', 'matches')); // Pass the tournament and matches to the view
+        $tournament = Tournament::findOrFail($id);
+        $matches = Matches::where('tournament_id', $id)->get();
+        return view('manager-match', compact('tournament', 'matches'));
     }
 
     public function showPlayerTournamentMatch($id)
@@ -318,20 +312,20 @@ public function showOrganiserTournamentMatch($id)
     // }
     
 
-    public function showPlayerTournaments($type)
-    {
-        $today = now(); // or use Carbon::now()
+    // public function showPlayerTournaments($type)
+    // {
+    //     $today = now(); // or use Carbon::now()
     
-        if ($type === 'upcoming') {
-            $tournaments = Tournament::where('date', '>', $today)->get();
-            return view('player-home', compact('tournaments', 'type'));
-        } elseif ($type === 'past') {
-            $tournaments = Tournament::where('date', '<=', $today)->get();
-            return view('player-past', compact('tournaments', 'type'));
-        } else {
-            return redirect()->back()->with('error', 'Invalid tournament type.');
-        }
-    }
+    //     if ($type === 'upcoming') {
+    //         $tournaments = Tournament::where('date', '>', $today)->get();
+    //         return view('player-home', compact('tournaments', 'type'));
+    //     } elseif ($type === 'past') {
+    //         $tournaments = Tournament::where('date', '<=', $today)->get();
+    //         return view('player-past', compact('tournaments', 'type'));
+    //     } else {
+    //         return redirect()->back()->with('error', 'Invalid tournament type.');
+    //     }
+    // }
     
     public function showHistory()
     {

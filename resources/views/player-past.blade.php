@@ -26,6 +26,7 @@
       </div>
     </div>
   </nav>
+  
   <main style="display: flex; flex-direction: column; min-height: 15vh;">
   <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
         <a href="home-upcoming.html" type="button" class="btn btn-secondary" style="margin-top: 10px; margin-right: 10px;">Players</a>

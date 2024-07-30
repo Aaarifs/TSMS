@@ -82,15 +82,10 @@ class AuthController extends Controller
 public function showManager(Request $request)
 {
     $teammanager_id = Auth::guard('teammanager')->id();
-    
-    // Set the default time zone to Asia/Kuala_Lumpur
     $timezone = 'Asia/Kuala_Lumpur';
     $now = Carbon::now($timezone);
-    
-    // Determine the type of tournaments to show (upcoming or past)
     $type = $request->query('type', 'upcoming');
 
-    // Fetch the tournaments based on the type
     $tournaments = Tournament::when($type == 'past', function ($query) use ($now) {
         $query->where('date', '<=', $now);
     }, function ($query) use ($now) {
@@ -106,6 +101,7 @@ public function showManager(Request $request)
         'type' => $type
     ]);
 }
+
 
     
         
