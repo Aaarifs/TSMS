@@ -58,7 +58,7 @@ Route::get('/tournament/{tournament}/standings', [TournamentController::class, '
     Route::get('/organiser-profile/update', [AuthController::class, 'showOrganiserUpdateAccountForm'])->name('organiser-updateprof');
     Route::post('/organiser-profile/update', [AuthController::class, 'OrganiserUpdateAccount'])->name('organiser-updateprof');
 
-    Route::get('/organiser/team/{team}', [TeamController::class, 'showTeamPlayers'])->name('organiser-team-players');
+    Route::get('/organiser/team/{team}', [TournamentController::class, 'showTeamPlayers'])->name('organiser-team-players');
 
 
     // Route to view tournament matches and tree
