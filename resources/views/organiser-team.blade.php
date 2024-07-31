@@ -68,7 +68,7 @@
                     @foreach($teams as $teammanager)
                       <tr>
         
-                        <td><a href="{{ route('organiser-team-players', $team->id) }}">{{ $team->name }}</a></td>                        
+                        <td><a href="{{ route('organiser-team-players', $team->id) }}">{{ $team->team_name }}</a></td>                        
                       </tr>
                     @endforeach
                     </tbody>
