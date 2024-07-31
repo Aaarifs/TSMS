@@ -45,12 +45,11 @@
                         <div class="card-header d-flex justify-content-between align-items-center" style="width: 100%; background-color:#0866FF;">
                             <div class="d-flex flex-grow-1 justify-content-center position-relative">
                                 <h3 class="text-white text-center">Standings</h3>
-                                <form action="{{ route('generate.standings', $tournament->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-light position-absolute end-0">
-                                        Generate Standings
-                                    </button>
-                                </form>
+                                <form action="{{ route('tournaments.generateStandings', $tournament->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-light position-absolute end-0">Generate Standings</button>
+</form>
+
                             </div>
                         </div>
                         <div class="card-body">
@@ -59,28 +58,28 @@
                                 <hr style="width:50%; margin-left:auto; margin-right:auto;">
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered text-center">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Rank</th>
-                                            <th>Team</th>
-                                            <th>Points</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($standings as $team)
-                                            <tr>
-                                                <td>{{ $team['rank'] }}</td>
-                                                <td>{{ $team['team_name'] }}</td>
-                                                <td>{{ $team['points'] }}</td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="3">No standings available.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                            <table class="table table-striped table-bordered text-center">
+    <thead class="thead-dark">
+        <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($standings as $team)
+            <tr>
+                <td>{{ $team['rank'] }}</td>
+                <td>{{ $team['team_name'] }}</td>
+                <td>{{ round($team['points']) }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="3">No standings available.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
                             </div>
                         </div>
                     </div>

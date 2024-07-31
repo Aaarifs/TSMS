@@ -30,9 +30,9 @@
 
   <main style="display: flex; flex-direction: column; min-height: 15vh;">
     <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
-        <a href="home-upcoming.html" type="button" class="btn btn-secondary" style="margin-top: 10px; margin-right: 10px;">Players</a>
-        <button type="button" class="btn btn-secondary disabled" style="margin-top: 10px; margin-right: 10px;">Tournament</button>
-        <a href="home-upcoming.html" type="button" class="btn btn-secondary" style="margin-top: 10px; ">History</a>
+        <a href="home-upcoming.html" type="button" class="btn btn-primary" style="margin-top: 10px; margin-right: 10px;">Players</a>
+        <button type="button" class="btn btn-primary disabled" style="margin-top: 10px; margin-right: 10px;">Tournament</button>
+        <a href="home-upcoming.html" type="button" class="btn btn-primary" style="margin-top: 10px; ">History</a>
       </div>
       
       <div class="d-flex justify-content-center">

@@ -189,11 +189,11 @@ public function showOrganiserTournamentMatch($id)
 
     public function showOrganiserTournamentTeams($id)
     {
-        $tournament = Tournament::findOrFail($id); 
+        $tournament = Tournament::findOrFail($id);
         $teammanagerIds = Tournament_team::where('tournament_id', $id)->pluck('teammanager_id');
         $teams = Teammanager::whereIn('id', $teammanagerIds)->get();
     
-        return view('organiser-team', compact('tournament', 'teams')); // Pass the tournament to the view
+        return view('organiser-team', compact('tournament', 'teams'));
     }
 
     public function showManagerTournamentMatch($id)
@@ -540,23 +540,51 @@ public function generateMatches(Tournament $tournament)
     // }
     
     public function updateMatches(Request $request, $id)
-{
-    $tournament = Tournament::findOrFail($id);
-
-    foreach ($request->input('matches', []) as $matchId => $data) {
-        $match = Matches::findOrFail($matchId);
-        $match->status = $data['status'];
-        $match->result = $data['result'];
-        $match->save();
+    {
+        $tournament = Tournament::findOrFail($id);
+    
+        foreach ($request->input('matches', []) as $matchId => $data) {
+            $match = Matches::findOrFail($matchId);
+            $match->status = $data['status'];
+            $match->result = $data['result'];
+            $match->team1_score = $data['team1_score'];
+            $match->team2_score = $data['team2_score'];
+            $match->save();
+        }
+    
+        return redirect()->route('organiser-match', $id)->with('success', 'Matches updated successfully!');
     }
+/**
+ * Calculate new Elo ratings for two teams after a match.
+ *
+ * @param int $rating1 Current rating of team 1
+ * @param int $rating2 Current rating of team 2
+ * @param float $score1 Score of team 1 (1 for win, 0.5 for draw, 0 for loss)
+ * @param float $score2 Score of team 2 (1 for win, 0.5 for draw, 0 for loss)
+ * @param int $kFactor K-factor to adjust rating sensitivity
+ * @return array New ratings for team 1 and team 2
+ */
+private function calculateEloRating($rating1, $rating2, $score1, $score2, $kFactor = 32)
+{
+    $expectedScore1 = 1 / (1 + pow(10, ($rating2 - $rating1) / 400));
+    $expectedScore2 = 1 / (1 + pow(10, ($rating1 - $rating2) / 400));
 
-    return redirect()->route('organiser-match', $id)->with('success', 'Matches updated successfully!');
+    $newRating1 = $rating1 + $kFactor * ($score1 - $expectedScore1);
+    $newRating2 = $rating2 + $kFactor * ($score2 - $expectedScore2);
+
+    return [$newRating1, $newRating2];
 }
 
 public function generateStandings(Tournament $tournament)
 {
+    // Log the start of the method
+    \Log::info('Generating standings for tournament: ' . $tournament->id);
+
     // Retrieve all matches for the given tournament
     $matches = Matches::where('tournament_id', $tournament->id)->get();
+
+    // Log matches
+    \Log::info('Matches retrieved: ' . $matches->count());
 
     // Retrieve all teams for the tournament
     $teams = Teammanager::whereIn('id', function($query) use ($tournament) {
@@ -565,53 +593,89 @@ public function generateStandings(Tournament $tournament)
               ->where('tournament_id', $tournament->id);
     })->get()->keyBy('id');
 
-    // Initialize points for all teams to 0
-    $teamPoints = $teams->mapWithKeys(function ($team) {
-        return [$team->id => ['points' => 0, 'team_name' => $team->team_name]];
+    // Log teams
+    \Log::info('Teams retrieved: ' . $teams->count());
+
+    // Initialize ratings for all teams to a default value (e.g., 1200)
+    $defaultRating = 1200;
+    $teamRatings = $teams->mapWithKeys(function ($team) use ($defaultRating) {
+        return [$team->id => ['points' => $defaultRating, 'team_name' => $team->team_name]];
     })->toArray();
 
-    // Iterate over each match to calculate points
+    // Iterate over each match to update ratings
     foreach ($matches as $match) {
         if ($match->result) {
-            if (isset($teamPoints[$match->team1_id])) {
-                $teamPoints[$match->team1_id]['points'] += ($match->result == $match->team1_id) ? 3 : 0;
+            $team1Id = $match->team1_id;
+            $team2Id = $match->team2_id;
+
+            // Ensure that both teams have ratings initialized
+            if (!isset($teamRatings[$team1Id])) {
+                $teamRatings[$team1Id] = ['points' => $defaultRating, 'team_name' => $teams[$team1Id]->team_name];
             }
-            if (isset($teamPoints[$match->team2_id])) {
-                $teamPoints[$match->team2_id]['points'] += ($match->result == $match->team2_id) ? 3 : 0;
+            if (!isset($teamRatings[$team2Id])) {
+                $teamRatings[$team2Id] = ['points' => $defaultRating, 'team_name' => $teams[$team2Id]->team_name];
             }
+
+            // Get current ratings
+            $rating1 = $teamRatings[$team1Id]['points'];
+            $rating2 = $teamRatings[$team2Id]['points'];
+
+            // Determine scores based on match result
+            $score1 = ($match->result == $team1Id) ? 1 : 0;
+            $score2 = ($match->result == $team2Id) ? 1 : 0;
+
+            // Calculate new ratings
+            [$newRating1, $newRating2] = $this->calculateEloRating($rating1, $rating2, $score1, $score2);
+
+            // Update ratings
+            $teamRatings[$team1Id]['points'] = $newRating1;
+            $teamRatings[$team2Id]['points'] = $newRating2;
         }
     }
 
-    // Sort the standings based on points in descending order
-    uasort($teamPoints, function ($a, $b) {
+    // Sort the standings based on ratings in descending order
+    uasort($teamRatings, function ($a, $b) {
         return $b['points'] - $a['points'];
     });
 
     // Rank the teams
     $rank = 1;
-    foreach ($teamPoints as &$data) {
+    foreach ($teamRatings as &$data) {
         $data['rank'] = $rank++;
     }
     unset($data);
 
+    // Log standings before saving to the database
+    \Log::info('Team Ratings: ' . json_encode($teamRatings));
+
     // Save standings to the tournament_teams table
-    foreach ($teamPoints as $teamId => $data) {
+    foreach ($teamRatings as $teamId => $data) {
         Tournament_team::updateOrCreate(
             ['tournament_id' => $tournament->id, 'teammanager_id' => $teamId],
             ['points' => $data['points'], 'standings' => $data['rank']]
         );
     }
 
+    // Log after updating the database
+    \Log::info('Standings updated in the database.');
+
     // Pass the standings to the view
     return view('organiser-standings', [
         'tournament' => $tournament,
-        'standings' => $teamPoints,
+        'standings' => $teamRatings,
     ]);
 }
 
 
 
+
+
+
+
+
     
+
+// TournamentController.php
 
 // TournamentController.php
 
@@ -642,6 +706,7 @@ public function showStandings(Tournament $tournament)
         'standings' => $standingsWithNames,
     ]);
 }
+
 
 
 
@@ -844,10 +909,18 @@ public function showStandings(Tournament $tournament)
     public function showTeamPlayers($team_id)
     {
         $team = Teammanager::findOrFail($team_id);
-        $players = $team->players; // Assuming the relationship is defined in the Teammanager model
+        $players = $team->players; // Ensure this relationship is defined
     
-        return view('organiser-team-players', compact('team', 'players'));
+        // Retrieve the points from the tournament_teams table
+        $teamPoints = Tournament_team::where('teammanager_id', $team_id)->value('points');
+    
+        // Assuming you need to pass the tournament ID to the view
+        $tournamentId = $team->tournament_id; // Adjust based on how you get the tournament ID
+    
+        return view('organiser-team-players', compact('team', 'players', 'teamPoints', 'tournamentId'));
     }
+    
+    
     
     
     

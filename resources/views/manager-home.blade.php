@@ -30,17 +30,18 @@
 
 <main style="display: flex; flex-direction: column; min-height: 15vh;">
     <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
-        <a href="{{ route('manager-player') }}" type="button" class="btn btn-secondary" style="margin-top: 10px; margin-right: 10px;">Players</a>
-        <a href="{{ route('manager-home', ['type' => 'upcoming']) }}" type="button" class="btn btn-secondary {{ $type == 'upcoming' ? 'disabled' : '' }}" style="margin-top: 10px; margin-right: 10px;">Tournament</a>
-        <a href="{{ route('manager-history') }}" type="button" class="btn btn-secondary" style="margin-top: 10px;">History</a>
+        <a href="{{ route('manager-player') }}" type="button" class="btn btn-primary" style="margin-top: 10px; margin-right: 10px;">Players</a>
+        <a href="{{ route('manager-home', ['type' => 'upcoming']) }}" type="button" class="btn btn-primary {{ ($type == 'upcoming' || $type == 'past') ? 'disabled' : '' }}
+" style="margin-top: 10px; margin-right: 10px;">Tournament</a>
+        <a href="{{ route('manager-history') }}" type="button" class="btn btn-primary" style="margin-top: 10px;">History</a>
     </div>
     <div class="d-flex justify-content-center">
         <hr style="width: 50%;">
     </div>
     <div class="container">
         <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
-            <a href="{{ route('manager-home', ['type' => 'upcoming']) }}" type="button" class="btn btn-primary {{ $type == 'upcoming' ? 'active' : '' }}" style="margin-right: 10px;">Upcoming</a>
-            <a href="{{ route('manager-home', ['type' => 'past']) }}" type="button" class="btn btn-primary {{ $type == 'past' ? 'active' : '' }}">Past</a>
+            <a href="{{ route('manager-home', ['type' => 'upcoming']) }}" type="button" class="btn btn-primary {{ $type == 'upcoming' ? 'disabled' : '' }}" style="margin-right: 10px;">Upcoming</a>
+            <a href="{{ route('manager-home', ['type' => 'past']) }}" type="button" class="btn btn-primary {{ $type == 'past' ? 'disabled' : '' }}">Past</a>
         </div>
     </div>
     <div class="container mt-3">

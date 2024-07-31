@@ -42,7 +42,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/tournaments/{id}/update-matches', [TournamentController::class, 'updateMatches'])->name('update.matches');
 
 // web.php
-Route::post('/tournaments/{tournament}/standings/generate', [TournamentController::class, 'generateStandings'])->name('generate.standings');
+Route::post('/tournaments/{tournament}/generate-standings', [TournamentController::class, 'generateStandings'])->name('tournaments.generateStandings');
 
 // routes/web.php
 
@@ -52,14 +52,13 @@ Route::get('/tournaments/{tournament}/generate-matches', [TournamentController::
     Route::post('/matches/{matchId}/update-status', [TournamentController::class, 'updateMatchStatus']);
 Route::post('/matches/{matchId}/update-winner', [TournamentController::class, 'updateMatchWinner']);
 Route::get('/tournament/{tournament}/standings', [TournamentController::class, 'showStandings'])->name('organiser-standings');
-    Route::get('/organiser-tournament-teams/{id}', [TournamentController::class, 'showOrganiserTournamentTeams'])->name('organiser-team');
+Route::get('/organiser-tournament-teams/{id}', [TournamentController::class, 'showOrganiserTournamentTeams'])->name('organiser-team');
 
     Route::get('/organiser-profile', [AuthController::class, 'showOrganiserProfile'])->name('organiser-profile');
     Route::get('/organiser-profile/update', [AuthController::class, 'showOrganiserUpdateAccountForm'])->name('organiser-updateprof');
     Route::post('/organiser-profile/update', [AuthController::class, 'OrganiserUpdateAccount'])->name('organiser-updateprof');
 
-    Route::get('/organiser/team/{team}', [TournamentController::class, 'showTeamPlayers'])->name('organiser-team-players');
-
+Route::get('/organiser/team/{team_id}', [TournamentController::class, 'showTeamPlayers'])->name('organiser-team-players');
 
     // Route to view tournament matches and tree
 // Route::get('/tournaments/{tournament}/matches/tree', [TournamentController::class, 'showTournamentTree'])->name('organiser-match-tree');

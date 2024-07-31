@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap(); // Ensure the class is properly referenced
 
         // Force HTTPS scheme in production environment
-        if(config('app.env') === 'production') {
-            URL::forceScheme('https');
-        }
+        // if(config('app.env') === 'production') {
+        //     URL::forceScheme('https');
+        // }
     }
 }

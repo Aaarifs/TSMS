@@ -10,20 +10,21 @@
 </head>
 <body style="background-image: url('../image/backgroundtsms.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="width: 100%; background-color:#0866FF;">
-<a href="{{ route('organiser-home') }}" class="btn btn-link position-absolute text-white" style=" text-decoration: none;">&lt; Back</a>
-<div class="container-fluid d-flex justify-content-between align-items-center">
+    <a href="{{ route('organiser-home') }}" class="btn btn-link position-absolute text-white" style=" text-decoration: none;">&lt; Back</a>
+    <div class="container-fluid d-flex justify-content-between align-items-center">
         <div class="dropdown mx-auto">
             <button class="btn dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="../image/logo (4).png" alt="Logo" style="width:64px;height:36px;">
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="{{ route('organiser-profile') }}">Profile</a></li>
-          <li>
-            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              @csrf
-            </form>
-          </li>
+                <li><a class="dropdown-item" href="{{ route('organiser-profile') }}">Profile</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -39,17 +40,17 @@
         </div>
         <div class="container mt-5">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center" style="width: 100%; background-color:#0866FF;">
                             <div class="d-flex flex-grow-1 justify-content-center position-relative">
                                 <h3 class="text-white text-center">Match</h3>
                                 <a href="{{ route('generate.matches', $tournament->id) }}">
-
-                                <button id="generate-matches-btn" class="btn btn-light position-absolute end-0">
+                                    <button id="generate-matches-btn" class="btn btn-light position-absolute end-0">
                                         Generate Matches
                                     </button>
-                                </a>                            </div>
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-3 text-center">
@@ -63,10 +64,12 @@
                                         <thead>
                                             <tr>
                                                 <th>Match</th>
-                                                <th >Status</th>
-                                                <th >Team 1</th>
-                                                <th >Team 2</th>
-                                                <th >Result</th>
+                                                <th>Status</th>
+                                                <th>Team 1</th>
+                                                <th>Team 2</th>
+                                                <th>Team 1 Score</th>
+                                                <th>Team 2 Score</th>
+                                                <th>Result</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,37 +88,41 @@
                                                         <td>{{ $match->team1 ? $match->team1->team_name : 'N/A' }}</td>
                                                         <td>{{ $match->team2 ? $match->team2->team_name : 'N/A' }}</td>
                                                         <td>
+                                                            <input type="number" class="form-control" name="matches[{{ $match->id }}][team1_score]" value="{{ $match->team1_score }}">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control" name="matches[{{ $match->id }}][team2_score]" value="{{ $match->team2_score }}">
+                                                        </td>
+                                                        <td>
                                                             <select class="form-select winner-select" name="matches[{{ $match->id }}][result]">
-                                                            <option value="">Select Winner</option>
-@if($match->team1)
-    <option value="{{ $match->team1->id }}" {{ $match->result == $match->team1->id ? 'selected' : '' }}>
-        {{ $match->team1->team_name }}
-    </option>
-@else
-    <option value="N/A">N/A</option>
-@endif
-
-@if($match->team2)
-    <option value="{{ $match->team2->id }}" {{ $match->result == $match->team2->id ? 'selected' : '' }}>
-        {{ $match->team2->team_name }}
-    </option>
-@else
-    <option value="N/A">N/A</option>
-@endif
-
+                                                                <option value="">Select Winner</option>
+                                                                @if($match->team1)
+                                                                    <option value="{{ $match->team1->id }}" {{ $match->result == $match->team1->id ? 'selected' : '' }}>
+                                                                        {{ $match->team1->team_name }}
+                                                                    </option>
+                                                                @else
+                                                                    <option value="N/A">N/A</option>
+                                                                @endif
+                                                                @if($match->team2)
+                                                                    <option value="{{ $match->team2->id }}" {{ $match->result == $match->team2->id ? 'selected' : '' }}>
+                                                                        {{ $match->team2->team_name }}
+                                                                    </option>
+                                                                @else
+                                                                    <option value="N/A">N/A</option>
+                                                                @endif
                                                             </select> 
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td colspan="5">No matches available.</td>
+                                                    <td colspan="7">No matches available.</td>
                                                 </tr>
                                             @endif
                                         </tbody>
                                     </table>
                                     <div class="text-center mt-3">
-                                    <button type="submit" class="btn btn-primary align-items-center">Save Changes</button>
+                                        <button type="submit" class="btn btn-primary align-items-center">Save Changes</button>
                                     </div>
                                 </div>
                             </form>

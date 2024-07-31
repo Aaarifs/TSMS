@@ -16,6 +16,8 @@ class Matches extends Model
         'team2_id',
         'status',
         'result',
+        'team1_score',
+        'team2_score',
     ];
 
     public function tournament()
