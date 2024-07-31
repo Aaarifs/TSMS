@@ -55,7 +55,7 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li><a class="dropdown-item" href="{{ route('organiser-update', $tournament->id) }}">Edit</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('organiser-match', $tournament->id) }}">View</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('organiser-match', $tournament->id) }}">Manage Tournament</a></li>
                                         <li>
                                             <form action="{{ route('tournaments.destroy', $tournament->id) }}" method="POST">
                                                 @csrf
