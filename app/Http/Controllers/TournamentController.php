@@ -842,6 +842,13 @@ public function showStandings(Tournament $tournament)
     }
     
     
+    public function showTeamPlayers($team_id)
+    {
+        $team = Teammanager::findOrFail($team_id);
+        $players = $team->players; // Assuming the relationship is defined in the Team model
+    
+        return view('organiser-team-players', compact('team', 'players'));
+    }
     
     
     

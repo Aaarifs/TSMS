@@ -10,7 +10,7 @@
 <body style="background-image: url('../image/backgroundtsms.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
 
   <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="width: 100%; background-color:#0866FF;">
-  <a href="{{ route('organiser-home') }}" class="btn btn-link position-absolute text-white" style=" text-decoration: none;">&lt; Back</a>
+  <a href="{{ route('organiser-team') }}" class="btn btn-link position-absolute text-white" style=" text-decoration: none;">&lt; Back</a>
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div class="dropdown mx-auto">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,56 +30,41 @@
   </nav>
 
   <main style="display: flex; flex-direction: column; min-height: 15vh;">
-
-    <div class="col-md-8 mx-auto">
-      <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
-      <a href="{{ route('organiser-match', $tournament->id) }}" class="btn btn-primary " style="margin-right: 10px; margin-top: 10px;">Match</a>
-        <a href="{{ route('organiser-standings', $tournament->id) }}" class="btn btn-primary " style="margin-right: 10px; margin-top: 10px;">Standings</a>
-        <a href="{{ route('organiser-team', $tournament->id) }}" class="btn btn-primary disabled" style="margin-top: 10px;">Teams</a>
-      </div>
+    <div class="container-expand-lg px-0" style="display: flex; justify-content: center;">
+      <a href="{{ route('organiser-team') }}" type="button" class="btn btn-secondary" style="margin-top: 10px;">Back to Teams</a>
     </div>
-    
     <div class="d-flex justify-content-center">
-      <hr style="width: 50%;">
+        <hr style="width: 50%;">
     </div>
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center">{{ $team->name }}</h2>
+                <h5 class="text-center mb-4">Players</h5>
+                @if($players->isEmpty())
+                    <p class="text-center">No players in this team.</p>
+                @else
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Player Name</th>
 
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center" style="width: 100%; background-color:#0866FF;">
-              <div class="d-flex flex-grow-1 justify-content-center position-relative">
-                <h3 class="text-white text-center">Teams</h3>
-              </div>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($players as $player)
+                                <tr>
+                                    <td>{{ $player->fullname }}</td>
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
-            <div class="card-body">
-              <div class="form-group mb-3 text-center">
-              <h6>{{ $tournament->name }}</h6>
-                <hr style="width:50%; margin-left:auto; margin-right:auto;">
-              </div>
-              <div class="table-responsive">
-                <table class="table text-center">
-                    <thead>
-                        <tr>
-                            <th>Team Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($teams as $teammanager)
-                      <tr>
-        
-                        <td><a href="{{ route('organiser-team-players', $team->id) }}">{{ $team->name }}</a></td>                        
-                      </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </main>
+</main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7/z5OVQAIhE6TLzj0NBPt6d63V6ME2OWBq4aytdgjdf6YRGY16Gv48kGJlI5JLs3" crossorigin="anonymous"></script>
