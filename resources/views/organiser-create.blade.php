@@ -52,7 +52,7 @@
                   </div>
                   <div class="form-group mb-3">
   <label for="TournamentDate">Tournament Date</label>
-  <input type="date" class="form-control" id="TournamentDate" name="TournamentDate">
+  <input type="date" class="form-control" id="TournamentDate" name="TournamentDate" required min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-d') }}">
 </div>
                 
                   <div class="form-group mb-3">
