@@ -56,7 +56,8 @@
                                 <h6 class="card-subtitle mb-2 text-muted">{{ $tournament->date }}, {{ $tournament->location }}</h6>
                                 <p class="card-text">{{ $tournament->type }}, {{ $tournament->format }}</p>
                                 <div class="dropdown d-flex justify-content-end mt-3">
-                                    <a class="dropdown-item" href="{{ route('manager-match', $tournament->id) }}">View</a>
+                                <a class="dropdown-item" href="{{ route('manager-match', $tournament->id) }}">View</a>
+
                                     @if($type == 'past' || $tournament->registeredTeamsCount >= 8)
                                         <button class="btn btn-secondary" disabled>Register</button>
                                     @else

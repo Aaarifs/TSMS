@@ -65,15 +65,14 @@ Route::get('/tournament/{tournament}/standings', [TournamentController::class, '
 
 
     // Teammanager
-    Route::get('/tournament-match/{id}', [TournamentController::class, 'showManagerTournamentMatch'])
-    ->name('manager-match')
-    ->middleware('auth:teammanager');
+    Route::get('/manager-tournament-match/{id}', [TournamentController::class, 'showManagerTournamentMatch'])
+    ->name('manager-match')->middleware('auth:teammanager');
 
-Route::get('/tournament-standings/{id}', [TournamentController::class, 'showManagerTournamentStandings'])
+Route::get('/manager-tournament-standings/{id}', [TournamentController::class, 'showManagerTournamentStandings'])
     ->name('manager-standings')
     ->middleware('auth:teammanager');
 
-Route::get('/tournament-teams/{id}', [TournamentController::class, 'showManagerTournamentTeams'])
+Route::get('/manager-tournament-teams/{id}', [TournamentController::class, 'showManagerTournamentTeams'])
     ->name('manager-team')
     ->middleware('auth:teammanager');
 
@@ -84,6 +83,7 @@ Route::post('/registertour/{tournament}', [TournamentController::class, 'registe
 Route::get('/manager-home', [AuthController::class, 'showManager'])
     ->name('manager-home')
     ->middleware('auth:teammanager');
+
     Route::get('/manager/history', [TournamentController::class, 'showHistory'])->name('manager-history');
     Route::delete('/tournaments/{id}/withdraw', [TournamentController::class, 'withdraw'])->name('withdraw-tournament')->middleware('auth:teammanager');
 
