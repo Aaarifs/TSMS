@@ -190,11 +190,10 @@ public function showOrganiserTournamentMatch($id)
     public function showOrganiserTournamentTeams($id)
     {
         $tournament = Tournament::findOrFail($id); 
-        $teammanagerIds = Tournament_team::where('tournament_id', $id)
-        ->pluck('teammanager_id');
+        $teammanagerIds = Tournament_team::where('tournament_id', $id)->pluck('teammanager_id');
         $teams = Teammanager::whereIn('id', $teammanagerIds)->get();
-
-        return view('organiser-team', compact('tournament','teams')); // Pass the tournament to the view
+    
+        return view('organiser-team', compact('tournament', 'teams')); // Pass the tournament to the view
     }
 
     public function showManagerTournamentMatch($id)
@@ -845,7 +844,7 @@ public function showStandings(Tournament $tournament)
     public function showTeamPlayers($team_id)
     {
         $team = Teammanager::findOrFail($team_id);
-        $players = $team->players; // Assuming the relationship is defined in the Team model
+        $players = $team->players; // Assuming the relationship is defined in the Teammanager model
     
         return view('organiser-team-players', compact('team', 'players'));
     }

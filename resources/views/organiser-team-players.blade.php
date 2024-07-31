@@ -38,8 +38,8 @@
     </div>
     <div class="container mt-3">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h2 class="text-center">{{ $team->name }}</h2>
+        <div class="col-md-8">
+                <h2 class="text-center">{{ $team->team_name }}</h2>
                 <h5 class="text-center mb-4">Players</h5>
                 @if($players->isEmpty())
                     <p class="text-center">No players in this team.</p>
@@ -48,14 +48,16 @@
                         <thead>
                             <tr>
                                 <th>Player Name</th>
-
+                                <th>Position</th>
+                                <th>Age</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($players as $player)
                                 <tr>
-                                    <td>{{ $player->fullname }}</td>
-
+                                    <td>{{ $player->name }}</td>
+                                    <td>{{ $player->position }}</td>
+                                    <td>{{ $player->age }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

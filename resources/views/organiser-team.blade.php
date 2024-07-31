@@ -65,13 +65,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($teams as $teammanager)
+                    @foreach($teams as $team)
                       <tr>
-        
-                        <td><a href="{{ route('organiser-team-players', $team->id) }}">{{ $team->team_name }}</a></td>                        
+                        <td><a href="{{ route('organiser-team-players', $team->id) }}">{{ $team->team_name }}</a></td>
                       </tr>
                     @endforeach
-                    </tbody>
+                  </tbody>
                 </table>
               </div>
             </div>
